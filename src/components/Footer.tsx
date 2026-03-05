@@ -1,47 +1,71 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
     return (
-        <footer className="bg-gray-800 text-white mt-auto">
+        <footer className="bg-gray-950 text-white mt-auto border-t border-gray-800">
             <div className="max-w-6xl mx-auto px-4 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                     <div>
-                        <h3 className="text-lg font-bold mb-4">About</h3>
-                        <p className="text-gray-400">
-                            A modern web template built with React, TypeScript,
-                            and Tailwind CSS.
+                        <h3 className="text-lg font-bold text-red-400 mb-4">
+                            Unspend
+                        </h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">
+                            Take back your time. Block distracting apps on iOS
+                            with privacy-first screen time management.
                         </p>
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-                        <ul className="text-gray-400 space-y-2">
+                        <h3 className="text-lg font-bold mb-4">Links</h3>
+                        <ul className="text-gray-400 text-sm space-y-2">
                             <li>
-                                <a
-                                    href="#"
+                                <Link
+                                    to="/"
                                     className="hover:text-white transition"
                                 >
                                     Home
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a
-                                    href="#"
+                                <Link
+                                    to="/features"
+                                    className="hover:text-white transition"
+                                >
+                                    Features
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/about"
                                     className="hover:text-white transition"
                                 >
                                     About
-                                </a>
+                                </Link>
                             </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-bold mb-4">Legal</h3>
+                        <ul className="text-gray-400 text-sm space-y-2">
                             <li>
-                                <a
-                                    href="#"
+                                <Link
+                                    to="/privacy"
                                     className="hover:text-white transition"
                                 >
-                                    Services
-                                </a>
+                                    Privacy Policy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/terms"
+                                    className="hover:text-white transition"
+                                >
+                                    Terms of Service
+                                </Link>
                             </li>
                             <li>
                                 <a
-                                    href="#"
+                                    href="mailto:maxfritzroth@gmail.com"
                                     className="hover:text-white transition"
                                 >
                                     Contact
@@ -49,17 +73,10 @@ const Footer: React.FC = () => {
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Contact</h3>
-                        <p className="text-gray-400">
-                            Email: hello@example.com
-                        </p>
-                        <p className="text-gray-400">Phone: (123) 456-7890</p>
-                    </div>
                 </div>
-                <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
                     <p>
-                        &copy; {new Date().getFullYear()} My Website. All rights
+                        &copy; {new Date().getFullYear()} Unspend. All rights
                         reserved.
                     </p>
                 </div>
