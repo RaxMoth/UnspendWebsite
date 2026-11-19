@@ -1,50 +1,53 @@
-# React + TypeScript + Vite
+# Unspend — Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The website for [Unspend](../BackYourTime), the app blocker for iPhone: what
+the app does, support, privacy policy and terms.
 
-Currently, two official plugins are available:
+React + TypeScript + Vite + Tailwind. No backend, no cookies, no analytics,
+no third-party requests — fonts and icons are local.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
+npm run dev       # http://localhost:5173
+npm run build     # type-check, then build to dist/
+npm test          # vitest
+npm run lint
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## It follows the app's design system
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+The site looks like the app because it is built from the same tokens and
+the same kind of components (`BackYourTime/docs/DESIGN_SYSTEM.md`). Pages
+contain no colours, sizes or text styles of their own.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+| In the app | Here |
+|---|---|
+| `lib/core/theme/app_colors.dart` — four palettes | CSS variables in `src/index.css`: light, dark, and both with increased contrast (`prefers-contrast`) |
+| Profile colours, `colors.readable` / `colors.filled` | `.tone-*` classes in `src/index.css` (values computed with the app's algorithm) |
+| Type, spacing, radius, motion tokens | `tailwind.config.js` (`text-heading`, `rounded-card`, `duration-medium`, …) |
+| `lib/core/widgets/` | `src/components/UI/` (`AppCard`, `IconBadge`, `Button`, `Chip`, `Switch`, `SectionLabel`, `Reveal`) |
+| Material "rounded" icons | `src/components/icons.ts`, drawn by `Icon` |
+| Theme: System / Light / Dark | `src/hooks/useTheme.ts`, the button in the header |
+
+The phone on the home page (`src/components/demo/PhoneDemo.tsx`) is the
+dashboard rebuilt from these components, with the app's wording.
+
+## Where the content lives
+
+| What | Where |
+|---|---|
+| Name, support address, App Store link, languages | `src/config/site.ts` |
+| The four block rules | `src/content/rules.ts` |
+| Support questions | `src/content/faq.ts` |
+| Privacy policy | `src/pages/PrivacyPolicy.tsx` — same text as `BackYourTime/store/privacy-policy.html`; change both together |
+| Terms | `src/pages/TermsOfService.tsx` |
+
+**When the app is live**, set `appStoreUrl` in `src/config/site.ts`. The
+"Coming soon" labels become download buttons.
+
+## Deploying
+
+A static site: build and serve `dist/`. `vercel.json` sends every path to
+`index.html` so the routes (`/features`, `/about`, `/support`, `/privacy`,
+`/terms`) work on reload. `/privacy` and `/support` are the URLs App Store
+Connect asks for.

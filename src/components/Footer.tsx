@@ -1,88 +1,83 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { SITE } from "../config/site";
+import { Wordmark } from "./Header";
+import { Container, SectionLabel } from "./UI";
 
-const Footer: React.FC = () => {
-    return (
-        <footer className="bg-gray-950 text-white mt-auto border-t border-gray-800">
-            <div className="max-w-6xl mx-auto px-4 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <div>
-                        <h3 className="text-lg font-bold text-red-400 mb-4">
-                            Unspend
-                        </h3>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            Take back your time. Block distracting apps on iOS
-                            with privacy-first screen time management.
-                        </p>
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Links</h3>
-                        <ul className="text-gray-400 text-sm space-y-2">
-                            <li>
-                                <Link
-                                    to="/"
-                                    className="hover:text-white transition"
-                                >
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/features"
-                                    className="hover:text-white transition"
-                                >
-                                    Features
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/about"
-                                    className="hover:text-white transition"
-                                >
-                                    About
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold mb-4">Legal</h3>
-                        <ul className="text-gray-400 text-sm space-y-2">
-                            <li>
-                                <Link
-                                    to="/privacy"
-                                    className="hover:text-white transition"
-                                >
-                                    Privacy Policy
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/terms"
-                                    className="hover:text-white transition"
-                                >
-                                    Terms of Service
-                                </Link>
-                            </li>
-                            <li>
-                                <a
-                                    href="mailto:maxfritzroth@gmail.com"
-                                    className="hover:text-white transition"
-                                >
-                                    Contact
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-                    <p>
-                        &copy; {new Date().getFullYear()} Unspend. All rights
-                        reserved.
+const LINK = "text-body text-muted transition-colors duration-fast hover:text-fg";
+
+const GROUPS = [
+    {
+        title: "Unspend",
+        links: [
+            { label: "Features", to: "/features" },
+            { label: "About", to: "/about" },
+            { label: "Support", to: "/support" },
+        ],
+    },
+    {
+        title: "Legal",
+        links: [
+            { label: "Privacy Policy", to: "/privacy" },
+            { label: "Terms of Service", to: "/terms" },
+        ],
+    },
+];
+
+const Footer: React.FC = () => (
+    <footer className="mt-auto border-t">
+        <Container className="py-12">
+            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+                <div>
+                    <Wordmark />
+                    <p className="mt-4 max-w-xs text-body text-muted">
+                        {SITE.tagline} An app blocker for iPhone that keeps
+                        everything on your device.
                     </p>
                 </div>
+
+                {GROUPS.map((group) => (
+                    <nav key={group.title} aria-label={group.title}>
+                        <SectionLabel>{group.title}</SectionLabel>
+                        <ul className="mt-3 space-y-2.5">
+                            {group.links.map((link) => (
+                                <li key={link.to}>
+                                    <Link to={link.to} className={LINK}>
+                                        {link.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                ))}
+
+                <div>
+                    <SectionLabel>Contact</SectionLabel>
+                    <ul className="mt-3 space-y-2.5">
+                        <li>
+                            <a
+                                href={`mailto:${SITE.supportEmail}`}
+                                className={LINK}
+                            >
+                                {SITE.supportEmail}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </footer>
-    );
-};
+
+            <div className="mt-12 flex flex-col gap-2 border-t pt-6 text-caption text-muted sm:flex-row sm:justify-between">
+                <p>
+                    &copy; {new Date().getFullYear()} {SITE.name}. All rights
+                    reserved.
+                </p>
+                <p>
+                    iPhone, Screen Time and App Store are trademarks of Apple
+                    Inc.
+                </p>
+            </div>
+        </Container>
+    </footer>
+);
 
 export default Footer;

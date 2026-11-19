@@ -1,55 +1,95 @@
 import React from "react";
-import { ButtonProps } from "../../types";
+import { Link } from "react-router-dom";
+import type { IconName } from "../icons";
+import Icon from "./Icon";
+import { cx } from "./tones";
+
+interface ButtonProps {
+    children: React.ReactNode;
+    /** `primary` is filled in the brand red; `secondary` is the quieter,
+     *  outlined alternative. */
+    variant?: "primary" | "secondary";
+    icon?: IconName;
+    trailingIcon?: IconName;
+    /** A route of this site. */
+    to?: string;
+    /** Any other link. */
+    href?: string;
+    onClick?: () => void;
+    disabled?: boolean;
+    className?: string;
+}
+
+const BASE =
+    "inline-flex min-h-tap select-none items-center justify-center gap-2 rounded-control px-5 py-3 text-center text-subheading transition duration-fast ease-standard";
+
+const VARIANT = {
+    primary: "bg-accent-fill text-white hover:brightness-110 active:brightness-95",
+    secondary:
+        "border bg-surface text-fg hover:border-muted/60 active:bg-background",
+};
 
 /**
- * Reusable Button Component
- * Supports multiple variants and sizes
+ * The button for the main action of a page or section. It is a link when
+ * it has somewhere to go (`to`, `href`) and a button otherwise.
  */
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    (
-        {
-            variant = "primary",
-            size = "md",
-            disabled = false,
-            onClick,
-            children,
-        },
-        ref,
-    ) => {
-        const baseClasses =
-            "font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+const Button: React.FC<ButtonProps> = ({
+    children,
+    variant = "primary",
+    icon,
+    trailingIcon,
+    to,
+    href,
+    onClick,
+    disabled = false,
+    className,
+}) => {
+    const classes = cx(
+        BASE,
+        VARIANT[variant],
+        disabled && "pointer-events-none opacity-disabled",
+        className,
+    );
+    const content = (
+        <>
+            {icon && <Icon name={icon} size={18} />}
+            <span>{children}</span>
+            {trailingIcon && <Icon name={trailingIcon} size={18} />}
+        </>
+    );
 
-        const variantClasses = {
-            primary:
-                "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
-            secondary:
-                "bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500",
-            outline:
-                "border-2 border-blue-600 text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
-            ghost: "text-blue-600 hover:bg-blue-50 focus:ring-blue-500",
-        };
-
-        const sizeClasses = {
-            sm: "px-3 py-1.5 text-sm",
-            md: "px-4 py-2 text-base",
-            lg: "px-6 py-3 text-lg",
-        };
-
-        const className = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}`;
-
+    if (to && !disabled) {
         return (
-            <button
-                ref={ref}
-                className={className}
-                disabled={disabled}
-                onClick={onClick}
-            >
-                {children}
-            </button>
+            <Link to={to} className={classes} onClick={onClick}>
+                {content}
+            </Link>
         );
-    },
-);
-
-Button.displayName = "Button";
+    }
+    if (href && !disabled) {
+        const external = /^https?:/.test(href);
+        return (
+            <a
+                href={href}
+                className={classes}
+                onClick={onClick}
+                {...(external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+            >
+                {content}
+            </a>
+        );
+    }
+    return (
+        <button
+            type="button"
+            className={classes}
+            onClick={onClick}
+            disabled={disabled}
+        >
+            {content}
+        </button>
+    );
+};
 
 export default Button;

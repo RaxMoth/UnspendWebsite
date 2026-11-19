@@ -1,182 +1,135 @@
+import React from "react";
+import LegalPage, { LegalSection } from "../components/LegalPage";
+import { SITE } from "../config/site";
+import { usePageTitle } from "../hooks";
+
+/**
+ * The app's privacy policy. The text is the one in the app repository
+ * (store/privacy-policy.html) — change both together.
+ */
 const PrivacyPolicy: React.FC = () => {
+    usePageTitle("Privacy Policy");
     return (
-        <div className="min-h-screen bg-white py-16 px-4">
-            <div className="max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                    Privacy Policy
-                </h1>
-                <p className="text-gray-500 mb-10">
-                    Last updated: March 5, 2026
+        <LegalPage title="Privacy Policy" updated="12 May 2026">
+            <LegalSection>
+                <p>
+                    Unspend is built to help you take back your time. We do
+                    that by giving you tools that run entirely on your device.{" "}
+                    <strong>
+                        We do not collect, transmit, sell, or share any of your
+                        personal data.
+                    </strong>
                 </p>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        1. Introduction
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        Unspend ("we", "our", or "the app") is an iOS
-                        application that helps you reduce screen time by
-                        blocking distracting apps. We are committed to
-                        protecting your privacy. This Privacy Policy explains
-                        what data we collect, how we use it, and your rights
-                        regarding your information.
-                    </p>
-                </section>
+            <LegalSection title="What we store, and where">
+                <ul>
+                    <li>
+                        <strong>
+                            Blocking profiles, schedules, tasks, and stats
+                        </strong>{" "}
+                        are saved using on-device{" "}
+                        <code>SharedPreferences</code>.
+                    </li>
+                    <li>
+                        <strong>Your PIN</strong> is hashed (SHA-256 with a
+                        per-install random salt) and stored in the iOS
+                        Keychain. The PIN itself never leaves your device, and
+                        the hash is unreadable without your PIN.
+                    </li>
+                    <li>
+                        <strong>The list of apps you choose to block</strong>{" "}
+                        is held by Apple's <code>FamilyControls</code>{" "}
+                        framework. iOS manages this directly; we cannot read,
+                        export, or share the list, and neither can anyone
+                        else.
+                    </li>
+                </ul>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        2. Data We Collect
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed mb-4">
-                        Unspend is designed with a{" "}
-                        <strong>privacy-first</strong> approach. We collect as
-                        little data as possible:
-                    </p>
-                    <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                        <li>
-                            <strong>App selections:</strong> The apps you choose
-                            to block are stored locally on your device using
-                            Apple's Screen Time framework. We never see or
-                            transmit the names of these apps.
-                        </li>
-                        <li>
-                            <strong>Profile data:</strong> Blocking profiles
-                            (names, schedules, time limits, tasks) are stored
-                            locally on your device only.
-                        </li>
-                        <li>
-                            <strong>PIN:</strong> If you set a deactivation PIN,
-                            it is cryptographically hashed and stored locally.
-                            We never store or transmit your PIN in plain text.
-                        </li>
-                        <li>
-                            <strong>Theme & language preferences:</strong>{" "}
-                            Stored locally on your device.
-                        </li>
-                    </ul>
-                </section>
+            <LegalSection title="What we don't do">
+                <ul>
+                    <li>No analytics SDKs, tracking pixels, or telemetry.</li>
+                    <li>No accounts or sign-in.</li>
+                    <li>
+                        No network requests for user data — the app runs
+                        offline.
+                    </li>
+                    <li>
+                        No advertising, no ad networks, no SDKs that could
+                        share data with third parties.
+                    </li>
+                    <li>
+                        No use of <code>IDFA</code> / App Tracking Transparency
+                        — we don't track you across apps or websites.
+                    </li>
+                </ul>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        3. Data We Do NOT Collect
-                    </h2>
-                    <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                        <li>
-                            We do <strong>not</strong> collect personal
-                            information such as your name, email address, or
-                            phone number.
-                        </li>
-                        <li>
-                            We do <strong>not</strong> use analytics, tracking,
-                            or advertising SDKs.
-                        </li>
-                        <li>
-                            We do <strong>not</strong> transmit any data to
-                            external servers. All data stays on your device.
-                        </li>
-                        <li>
-                            We do <strong>not</strong> have access to your
-                            actual app usage data. Apple's Screen Time APIs are
-                            opaque by design — apps only receive anonymous
-                            tokens, never actual app names or usage details.
-                        </li>
-                    </ul>
-                </section>
+            <LegalSection title="Family Controls / Screen Time API">
+                <p>
+                    Unspend requests Family Controls authorization so iOS can
+                    enforce your self-imposed blocks. This authorization is
+                    requested on first use and stays local to your device. We
+                    use this API only to:
+                </p>
+                <ul>
+                    <li>
+                        Read which apps and categories you've chosen to block
+                        (you select them via Apple's system picker — the
+                        selection never leaves Apple's framework).
+                    </li>
+                    <li>
+                        Apply and remove iOS shields when you activate or
+                        deactivate a profile.
+                    </li>
+                    <li>
+                        Schedule time-based blocks and usage limits through
+                        Apple's <code>DeviceActivity</code> framework.
+                    </li>
+                </ul>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        4. Apple Screen Time & Family Controls
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        Unspend uses Apple's Family Controls, Managed Settings,
-                        and Device Activity frameworks to block apps. These
-                        frameworks are privacy-preserving by design: your app
-                        selections are represented as opaque tokens that cannot
-                        be reverse-engineered into app names. Unspend never
-                        accesses or stores identifiable information about which
-                        specific apps you use or for how long.
-                    </p>
-                </section>
+            <LegalSection title="Your control">
+                <p>
+                    You can delete every byte of data Unspend has stored on
+                    your device at any time: open the app, go to{" "}
+                    <em>Settings → Delete All Data</em>. This removes all
+                    profiles, your PIN, the daily activity log, and any
+                    pending shields. Uninstalling the app removes everything
+                    iOS keeps for the app as well.
+                </p>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        5. Data Storage & Security
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        All data is stored locally on your device using iOS
-                        secure storage mechanisms. Your PIN is salted and hashed
-                        using SHA-256 before storage. No data is backed up to
-                        external cloud services by the app itself. Standard
-                        iCloud/iTunes backups may include app data per your iOS
-                        settings.
-                    </p>
-                </section>
+            <LegalSection title="Children">
+                <p>
+                    Unspend can be used on your own iPhone or, by a parent or
+                    guardian, on a child's iPhone. In both cases it works the
+                    same way: everything stays on the device. We don't
+                    collect any information from anyone, including children
+                    under 13, and a parent's approval is handled by Apple's
+                    Screen Time, not by us.
+                </p>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        6. Third-Party Services
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        Unspend does not integrate any third-party analytics,
-                        advertising, or tracking services. The app has no
-                        network communication beyond what is required by iOS
-                        system frameworks.
-                    </p>
-                </section>
+            <LegalSection title="Changes to this policy">
+                <p>
+                    If we change how the app handles data we'll update this
+                    page and, where required, prompt you inside the app on
+                    next launch.
+                </p>
+            </LegalSection>
 
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        7. Children's Privacy
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        Unspend does not collect personal information from
-                        anyone, including children under the age of 13. The app
-                        is designed as a self-use screen time management tool.
-                    </p>
-                </section>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        8. Your Rights
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        Since all data is stored locally on your device, you
-                        have full control. You can delete all app data at any
-                        time by uninstalling Unspend. No account creation is
-                        required, and no data persists on any server after
-                        removal.
-                    </p>
-                </section>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        9. Changes to This Policy
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        We may update this Privacy Policy from time to time. Any
-                        changes will be posted on this page with an updated
-                        revision date. Continued use of the app after changes
-                        constitutes acceptance of the revised policy.
-                    </p>
-                </section>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-semibold text-gray-800 mb-3">
-                        10. Contact Us
-                    </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                        If you have any questions about this Privacy Policy,
-                        please contact us at:{" "}
-                        <a
-                            href="mailto:maxfritzroth@gmail.com"
-                            className="text-blue-600 hover:underline"
-                        >
-                            maxfritzroth@gmail.com
-                        </a>
-                    </p>
-                </section>
-            </div>
-        </div>
+            <LegalSection title="Contact">
+                <p>
+                    Questions? Email{" "}
+                    <a href={`mailto:${SITE.supportEmail}`}>
+                        {SITE.supportEmail}
+                    </a>
+                    .
+                </p>
+            </LegalSection>
+        </LegalPage>
     );
 };
 

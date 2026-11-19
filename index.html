@@ -2,17 +2,42 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <link
-            rel="icon"
-            type="image/png"
-            href="https://cdn-icons-png.flaticon.com/512/833/833472.png"
-        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Unspend — Block apps. Take back time.</title>
         <meta
             name="description"
-            content="Unspend — Take back your time. Block distracting apps on iOS with privacy-first screen time management."
+            content="Unspend blocks the apps that eat your day — with schedules, daily limits and task lists, enforced by iOS itself. No account, no tracking; everything stays on your iPhone."
         />
-        <title>Unspend — Take Back Your Time</title>
+        <meta name="theme-color" content="#0D0D0D" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Unspend" />
+        <meta
+            property="og:title"
+            content="Unspend — Block apps. Take back time."
+        />
+        <meta
+            property="og:description"
+            content="Block the apps eating your day. Set a schedule, a daily budget, or a task list — Unspend keeps you out until you've earned your time back."
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <script>
+            // Apply the saved theme before the first paint (see useTheme).
+            (function () {
+                var mode = null;
+                try {
+                    mode = JSON.parse(localStorage.getItem("unspend-theme"));
+                } catch (e) {}
+                var dark =
+                    mode === "dark" ||
+                    (mode !== "light" &&
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches);
+                document.documentElement.dataset.theme = dark
+                    ? "dark"
+                    : "light";
+            })();
+        </script>
     </head>
     <body>
         <div id="root"></div>
